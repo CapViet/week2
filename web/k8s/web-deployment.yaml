@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: week1-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: week1-web
+  template:
+    metadata:
+      labels:
+        app: week1-web
+    spec:
+      imagePullSecrets:
+        - name: acr-secret   
+      containers:
+        - name: week1-web
+          image: mindxweek1acr123.azurecr.io/week1-web:authFinal
+          ports:
+            - containerPort: 80
+
+          env:
+            - name: VITE_API_URL
+              value: "https://week1-api-asbbfkh5crchdwb4.eastasia-01.azurewebsites.net"

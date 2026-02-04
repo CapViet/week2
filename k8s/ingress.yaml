@@ -1,0 +1,42 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: week1-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /auth(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: week1-api
+            port:
+              number: 80
+
+      - path: /protected(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: week1-api
+            port:
+              number: 80
+
+      - path: /health
+        pathType: Prefix
+        backend:
+          service:
+            name: week1-api
+            port:
+              number: 80
+
+      - path: /(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: week1-web
+            port:
+              number: 80

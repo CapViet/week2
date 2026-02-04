@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: week1-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: week1-api
+  template:
+    metadata:
+      labels:
+        app: week1-api
+    spec:
+      imagePullSecrets:
+        - name: acr-secret
+      containers:
+        - name: week1-api
+          image: mindxweek1acr123.azurecr.io/week1-api:authFinal
+          ports:
+            - containerPort: 8080
+
+          env:
+            # App
+            - name: PORT
+              value: "8080"
+
+            # JWT 
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_SECRET
+
+            # OpenID
+            - name: OIDC_CLIENT_ID
+              value: "mindx-onboarding"
+
+            - name: OIDC_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: oidc-secret
+                  key: client-secret
+
+            - name: OIDC_ISSUER
+              value: "https://id-dev.mindx.edu.vn"
+
+            - name: OIDC_REDIRECT_URI
+              value: "https://week1-api-asbbfkh5crchdwb4.eastasia-01.azurewebsites.net/auth/callback"
+
+            - name: FRONTEND_URL
+              value: "https://week1-openid.vercel.app"
