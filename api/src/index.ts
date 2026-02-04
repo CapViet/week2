@@ -1,3 +1,15 @@
+const appInsights = require("applicationinsights");
+
+appInsights.setup(process.env.APPINSIGHTS_CONNECTION_STRING)
+  .setAutoCollectRequests(true)
+  .setAutoCollectPerformance(true)
+  .setAutoCollectExceptions(true)
+  .setAutoCollectDependencies(true)
+  .setAutoCollectConsole(true)
+  .setSendLiveMetrics(true)
+  .start();
+
+
 import express from "express";
 import cors from "cors";
 import axios from "axios";
@@ -131,3 +143,4 @@ app.get("/protected", requireAuth, (req, res) => {
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`API running on port ${PORT}`);
 });
+
